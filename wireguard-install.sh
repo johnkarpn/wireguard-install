@@ -253,7 +253,7 @@ function installWireGuard() {
   fi
 
   # Make sure the directory exists (this does not seem the be the case on fedora)
-  mkdir /etc/wireguard >/dev/null 2>&1
+  mkdir -p /etc/wireguard >/dev/null 2>&1
 
   chmod 600 -R /etc/wireguard/
 
