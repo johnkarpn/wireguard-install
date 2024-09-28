@@ -103,22 +103,35 @@ function initialCheck() {
 
 function installQuestions() {
   echo "Welcome to the WireGuard installer!"
-  echo "The git repository is available at: https://github.com/angristan/wireguard-install"
-  echo ""
-  echo "I need to ask you a few questions before starting the setup."
-  echo "You can keep the default options and just press enter if you are ok with them."
+  echo "The git repository is available at: https://github.com/johnkarpn/wireguard-install"
   echo ""
 
-  CONFIG_IPV6=1
-  read -rp "Enable config IPv6 (y/n): " -e -i "y" CONFIG_IPV6_ANSWER
-  if [ "$CONFIG_IPV6_ANSWER" != "y" ]; then
-    CONFIG_IPV6=0
+  if [ -z "$CONFIG_IPV6" ]; then
+    CONFIG_IPV6=1
+    read -rp "Enable config IPv6 (y/n): " -e -i "y" answer
+    if [ "$answer" != "y" ]; then
+      CONFIG_IPV6=0
+    fi
+  else
+    if [ "$CONFIG_IPV6" -eq 1 ]; then
+      echo "Enable config IPv6: true"
+    else
+      echo "Enable config IPv6: false"
+    fi
   fi
 
-  CONFIG_FIREWALL=1
-  read -rp "Enable config iptables (y/n): " -e -i "y" CONFIG_IPV6_ANSWER
-  if [ "$CONFIG_IPV6_ANSWER" != "y" ]; then
-    CONFIG_FIREWALL=0
+  if [ -z "$CONFIG_FIREWALL" ]; then
+    CONFIG_FIREWALL=1
+    read -rp "Enable config iptables (y/n): " -e -i "y" answer
+    if [ "$answer" != "y" ]; then
+      CONFIG_FIREWALL=0
+    fi
+  else
+    if [ "$CONFIG_IPV6" -eq 1 ]; then
+      echo "Enable config firewall: true"
+    else
+      echo "Enable config firewall: false"
+    fi
   fi
 
   # Detect public IPv4 or IPv6 address and pre-fill for the user
