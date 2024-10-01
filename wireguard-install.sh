@@ -258,9 +258,13 @@ function installWireGuard() {
   # Install WireGuard tools and module
   if [[ ${OS} == 'ubuntu' ]] || [[ ${OS} == 'debian' && ${VERSION_ID} -gt 10 ]]; then
     apt-get update
-    apt-get install -y wireguard resolvconf qrencode
+    apt-get install -y wireguard qrencode
     if [ "$CONFIG_FIREWALL" -eq 1 ]; then
       apt-get install -y iptables
+    fi
+
+    if ! [ "$DISABLE_RESOLVCONF" -eq 1 ]; then
+      apt-get install -y resolvconf
     fi
   elif [[ ${OS} == 'debian' ]]; then
     if ! grep -rqs "^deb .* buster-backports" /etc/apt/; then
@@ -268,10 +272,14 @@ function installWireGuard() {
       apt-get update
     fi
     apt update
-    apt-get install -y resolvconf qrencode
+    apt-get install -y qrencode
     apt-get install -y -t buster-backports wireguard
     if [ "$CONFIG_FIREWALL" -eq 1 ]; then
       apt-get install -y iptables
+    fi
+
+    if ! [ "$DISABLE_RESOLVCONF" -eq 1 ]; then
+      apt-get install -y resolvconf
     fi
   elif [[ ${OS} == 'fedora' ]]; then
     if [[ ${VERSION_ID} -lt 32 ]]; then
